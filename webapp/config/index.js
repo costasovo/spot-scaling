@@ -39,7 +39,7 @@ config.set('vendor_dependencies', [
   if (pkg.dependencies[dep]) return true;
 
   console.log(chalk.yellow(
-    `Package "${dep}" was not found as an npm dependency and won't be ` +
+    `Package "${dep}" was not found as an npm dependency and wont be ` +
     `included in the vendor bundle.\n` +
     `Consider removing it from vendor_dependencies in ~/config/index.js`
   ));

@@ -1,7 +1,9 @@
 import React                  from 'react';
 import { bindActionCreators } from 'redux';
 import { connect }            from 'react-redux';
-import counterActions         from 'actions/counter';
+import loginActions           from 'actions/login';
+import LoginForm              from 'components/LoginForm';
+
 
 // We define mapStateToProps and mapDispatchToProps where we'd normally use
 // the @connect decorator so the data requirements are clear upfront, but then
@@ -9,30 +11,26 @@ import counterActions         from 'actions/counter';
 // the component can be tested w/ and w/o being connected.
 // See: http://rackt.github.io/redux/docs/recipes/WritingTests.html
 const mapStateToProps = (state) => ({
-  counter : state.counter,
-  routerState : state.router
+	counter : state.counter,
+	routerState : state.router
 });
 const mapDispatchToProps = (dispatch) => ({
-  actions : bindActionCreators(counterActions, dispatch)
+	actions : bindActionCreators(loginActions, dispatch)
 });
 export class HomeView extends React.Component {
-  static propTypes = {
-    actions  : React.PropTypes.object,
-    counter  : React.PropTypes.number
-  }
+	static propTypes = {
+		actions  : React.PropTypes.object,
+		counter  : React.PropTypes.number
+	}
 
-  render () {
-    return (
-      <div className='container text-center'>
-        <h1>Welcome to the React Redux Starter Kit</h1>
-        <h2>Sample Counter: {this.props.counter}</h2>
-        <button className='btn btn-default'
-                onClick={this.props.actions.increment}>
-          Increment
-        </button>
-      </div>
-    );
-  }
+	render () {
+		return (
+			<div className='container'>
+				<h1>Welcome to siAga</h1>
+				<LoginForm />
+			</div>
+		);
+	}
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomeView);
