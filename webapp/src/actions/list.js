@@ -1,4 +1,5 @@
 import { LOAD_LIST, LIST_LOADED } from 'constants/list';
+import axios                      from 'axios';
 
 var listLoaded = function(listData) {
 	return {
@@ -9,9 +10,14 @@ var listLoaded = function(listData) {
 
 export default {
   loadList: (accessKey, secret) => (dispatch) => {
-	setTimeout(() => {
-		// Yay! Can invoke sync or async actions with `dispatch`
-	 	dispatch(listLoaded(['item1']));
-	}, 1000);
+  	var loading = axios.get(
+  		'https://reuojbzc0k.execute-api.eu-west-1.amazonaws.com/prod/spot-scaling-group-list',
+  		{
+  			headers: {'X-Access-Secret': secret, 'X-Access-Key': accessKey}
+  		}
+  	);
+  	loading.then( (response) => {
+  		dispatch(listLoaded(response.data));
+  	});
   }
 };

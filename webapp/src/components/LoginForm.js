@@ -50,7 +50,7 @@ export class LoginForm extends React.Component {
 					onChange={this.handleChange}
 					/>
 				</div>
-				<button type="submit" className="btn btn-success">Submit</button>
+				<button type="submit" className="btn btn-success">Login</button>
 			</form>
 		);
 	}
