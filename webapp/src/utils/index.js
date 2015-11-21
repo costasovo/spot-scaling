@@ -1,7 +1,8 @@
-import React        from 'react';
-import ReactDOM     from 'react-dom';
-import { Provider } from 'react-redux';
-import DevTools     from 'containers/DevToolsWindow';
+import React         from 'react';
+import ReactDOM      from 'react-dom';
+import { Provider }  from 'react-redux';
+import DevTools      from 'containers/DevToolsWindow';
+import createHistory from 'history/lib/createBrowserHistory';
 
 export function createConstants (...constants) {
   return constants.reduce((acc, constant) => {
@@ -16,6 +17,15 @@ export function createReducer (initialState, fnMap) {
 
     return handler ? handler(state, payload) : state;
   };
+}
+
+var history;
+
+export function getHistory () {
+  if (!history) {
+    history = createHistory();
+  }
+  return history
 }
 
 export function createDevToolsWindow (store) {

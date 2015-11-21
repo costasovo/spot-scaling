@@ -1,8 +1,10 @@
 import { combineReducers }    from 'redux';
 import { routerStateReducer } from 'redux-router';
-import counter                from './counter';
+import login                  from './login';
+import list                   from './list';
 
 export default combineReducers({
-  counter,
-  router: routerStateReducer
+	login,
+	list,
+	router: routerStateReducer
 });

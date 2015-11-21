@@ -11,7 +11,6 @@ import LoginForm              from 'components/LoginForm';
 // the component can be tested w/ and w/o being connected.
 // See: http://rackt.github.io/redux/docs/recipes/WritingTests.html
 const mapStateToProps = (state) => ({
-	counter : state.counter,
 	routerState : state.router
 });
 const mapDispatchToProps = (dispatch) => ({
