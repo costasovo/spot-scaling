@@ -31,6 +31,13 @@ export default {
   },
   
   createGroup: (data, secret, accessKey) => (dispatch) => {
+  	// setTimeout( () => {
+  	// 	dispatch(groupCreated(data));
+  		
+  	// }, 1000);
+
+  	// return;
+
   	var saving = axios.post(
   		'https://reuojbzc0k.execute-api.eu-west-1.amazonaws.com/prod/spot-scaling-group',
   		data,

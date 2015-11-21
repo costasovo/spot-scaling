@@ -1,5 +1,5 @@
 import { createReducer }     from '../utils';
-import { LOAD_FORM_DATA }    from 'constants/create';
+import { LOAD_FORM_DATA, CREATE_GROUP }    from 'constants/create';
 
 const initialState = {
 	formData: null,
@@ -17,5 +17,12 @@ export default createReducer(initialState, {
   		}
   	}
   	return state;
+  },
+  [CREATE_GROUP] : (state, payload) => {
+  	
+	return {
+  			formData: state.formData,
+  			created: true
+  	}
   }
 });

@@ -31,8 +31,9 @@ export class ListView extends React.Component {
 	componentWillMount() {
 		if (!this.props.loginState) {
 			getHistory().pushState(null, '/');
+		} else {
+			this.props.actions.loadList(this.props.loginState.accessKey, this.props.loginState.secret);
 		}
-		this.props.actions.loadList(this.props.loginState.accessKey, this.props.loginState.secret);
 	}
 
 	render () {

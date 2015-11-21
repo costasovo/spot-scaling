@@ -38,8 +38,10 @@ export class CreateView extends React.Component {
 	componentWillMount() {
 		if (!this.props.loginState) {
 			getHistory().pushState(null, '/');
+
+		} else {
+			this.props.actions.loadFormData(this.props.loginState.accessKey, this.props.loginState.secret);
 		}
-		this.props.actions.loadFormData(this.props.loginState.accessKey, this.props.loginState.secret);
 	}
 
 	handleChange = (event) => {
@@ -48,7 +50,14 @@ export class CreateView extends React.Component {
 
 	handleSubmit = (event) => {
 		event.preventDefault();
-		this.props.actions.createGroup(this.state, this.props.loginState.accessKey, this.props.loginState.secret);
+		if (!this.state.LaunchConfigurationName) {
+			this.setState({LaunchConfigurationName: this.props.createState.formData.launchConfigurations[0].name}, () => {
+				this.props.actions.createGroup(this.state, this.props.loginState.accessKey, this.props.loginState.secret);
+			});
+		} else {
+			this.props.actions.createGroup(this.state, this.props.loginState.accessKey, this.props.loginState.secret);
+		}
+
 		//getHistory().pushState(null, '/list');
 	}
 
@@ -107,65 +116,73 @@ export class CreateView extends React.Component {
 		return (
 			<div className='container'>
 				<h1>Create Autoscaling Group</h1>
-				<Link to={`list`}>&lt; back to list of groups</Link>
+				{ !this.props.createState.created &&
+					<form onSubmit={this.handleSubmit}>
+						<Link to={`list`}>&lt; back to list of groups</Link>
+						<div className="form-group">
+							<label htmlFor="Name">Name</label>
+							<input type="text" className="form-control" name="Name" id="Name" placeholder="Type some name" required
+							onChange={this.handleChange}
+							/>
+						</div>
+						<div className="form-group">
+							<label htmlFor="DesiredCapacity">Desired Capacity</label>
+							<input type="number" min="0" className="form-control" name="DesiredCapacity" id="DesiredCapacity" placeholder="Desired Capacity" required
+							onChange={this.handleChange}
+							/>
+						</div>
+						<div className="form-group">
+							<label htmlFor="HealthCheckGracePeriod">Health Check Grace Period [s]</label>
+							<input type="number" min="0" className="form-control" value={this.state.HealthCheckGracePeriod} name="HealthCheckGracePeriod" id="HealthCheckGracePeriod" required
+							onChange={this.handleChange}
+							/>
+						</div>
+						<div className="form-group">
+							<label htmlFor="LaunchConfigurationName">Launch Configuration</label>
+							<select  className="form-control" name="LaunchConfigurationName" id="LaunchConfigurationName" onChange={this.handleChange}>
+								{launchConfigs}
+							</select>
+							
+						</div>
+						<div className="form-group">
+							<label htmlFor="MaxSize">Max size</label>
+							<input type="number" min="0" className="form-control" value={this.state.MaxSize} name="MaxSize" id="MaxSize" required placeholder="Max. number of instances"
+							onChange={this.handleChange}
+							/>
+						</div>
+						<div className="form-group">
+							<label htmlFor="MinSize">Min size</label>
+							<input type="number" min="0" className="form-control" value={this.state.MinSize} name="MinSize" id="MinSize" required placeholder="Min. number of instances"
+							onChange={this.handleChange}
+							/>
+						</div>
+						<div className="form-group">
+							<label htmlFor="MinClassicSize">Min non-spot size</label>
+							<input type="number" min="0" className="form-control" value={this.state.MinClassicSize} name="MinClassicSize" id="MinClassicSize" required placeholder="Min. number of non-spot instances"
+							onChange={this.handleChange}
+							/>
+						</div>
+						
+						<div className="form-group">
+							<h5>Load balancers</h5>
+							{elbsCheckboxes}
+					  	</div>
 
-				<form onSubmit={this.handleSubmit}>
-				<div className="form-group">
-					<label htmlFor="Name">Name</label>
-					<input type="text" className="form-control" name="Name" id="Name" placeholder="Type some name" required
-					onChange={this.handleChange}
-					/>
-				</div>
-				<div className="form-group">
-					<label htmlFor="DesiredCapacity">Desired Capacity</label>
-					<input type="number" min="0" className="form-control" name="DesiredCapacity" id="DesiredCapacity" placeholder="Desired Capacity" required
-					onChange={this.handleChange}
-					/>
-				</div>
-				<div className="form-group">
-					<label htmlFor="HealthCheckGracePeriod">Health Check Grace Period [s]</label>
-					<input type="number" min="0" className="form-control" value={this.state.HealthCheckGracePeriod} name="HealthCheckGracePeriod" id="HealthCheckGracePeriod" required
-					onChange={this.handleChange}
-					/>
-				</div>
-				<div className="form-group">
-					<label htmlFor="LaunchConfigurationName">Launch Configuration</label>
-					<select  className="form-control" name="LaunchConfigurationName" id="LaunchConfigurationName" onChange={this.handleChange}>
-						{launchConfigs}
-					</select>
-					
-				</div>
-				<div className="form-group">
-					<label htmlFor="MaxSize">Max size</label>
-					<input type="number" min="0" className="form-control" value={this.state.MaxSize} name="MaxSize" id="MaxSize" required placeholder="Max. number of instances"
-					onChange={this.handleChange}
-					/>
-				</div>
-				<div className="form-group">
-					<label htmlFor="MinSize">Min size</label>
-					<input type="number" min="0" className="form-control" value={this.state.MinSize} name="MinSize" id="MinSize" required placeholder="Min. number of instances"
-					onChange={this.handleChange}
-					/>
-				</div>
-				<div className="form-group">
-					<label htmlFor="MinClassicSize">Min non-spot size</label>
-					<input type="number" min="0" className="form-control" value={this.state.MinClassicSize} name="MinClassicSize" id="MinClassicSize" required placeholder="Min. number of non-spot instances"
-					onChange={this.handleChange}
-					/>
-				</div>
-				
-				<div className="form-group">
-					<h5>Load balancers</h5>
-					{elbsCheckboxes}
-			  	</div>
-
-			  	<div className="form-group">
-					<h5>VPC Zones</h5>
-					{vpcZones}
-			  	</div>
-				
-				<button type="submit" className="btn btn-success">Create</button>
-			</form>
+					  	<div className="form-group">
+							<h5>VPC Zones</h5>
+							{vpcZones}
+					  	</div>
+						
+						<button type="submit" className="btn btn-success">Create</button>
+					</form>
+				}
+				{
+					this.props.createState.created &&
+					<div>
+						<p className="lead">Group succesfully created.</p>
+						<Link className="btn btn-success" to={`list`}>back to list of groups</Link>
+					</div>
+				}
 			</div>
 		);
 	}
