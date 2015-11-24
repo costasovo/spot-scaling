@@ -47,6 +47,9 @@ export class ListView extends React.Component {
 				<tr className={rowClass} key={item.id} onClick={() => this.props.detailActions.toggle(item)}>
 					<td>{item.Name}</td>
 					<td>{item.DesiredCapacity} ({item.MinSize}/{item.MaxSize})</td>
+					<td>{item.stats && <strong>$ {item.stats.savingsMoth} ({item.stats.savingsPercentage}%)</strong>}</td>
+					<td>{item.stats && item.stats.runningCLassic}</td>
+					<td>{item.stats && item.stats.runningSpot}</td>
 					<td>{item.LaunchConfigurationName}</td>
 					<td>{elbs}</td>
 				</tr>
@@ -55,13 +58,17 @@ export class ListView extends React.Component {
 
 		return (
 			<div className='container'>
-				<h1>Your autoscaling groups</h1>
-				<Link className="btn btn-primary" to={`/create`}>Create new autoscaling group</Link>
+				<h1>Autoscaling Groups</h1>
+				<Link className="btn btn-primary" to={`/create`}>create new autoscaling group</Link>
+				&nbsp;<a className="btn btn-default" onClick={() => this.props.actions.loadList(this.props.loginState.accessKey, this.props.loginState.secret)}>refresh</a>
 				<table className='table table-hover'>
 					<thead>
 						<tr>
 							<th>Name</th>
 							<th>Desired capacity (Min/Max)</th>
+							<th>Month savings</th>
+							<th>Non-spot i. count</th>
+							<th>Spot i. count</th>
 							<th>Launch Config.</th>
 							<th>Load Balancers</th>
 						</tr>

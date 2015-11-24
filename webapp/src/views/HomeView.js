@@ -24,8 +24,11 @@ export class HomeView extends React.Component {
 
 	render () {
 		return (
-			<div className='container'>
-				<h1>Welcome to siAga</h1>
+			<div className='container homepage'>
+				<h1 className="text-center">
+					<span className="logo">si<b>ag</b>a</span><br/>
+				</h1>
+				<p className='lead text-center'>Welcome.</p>
 				<LoginForm />
 			</div>
 		);

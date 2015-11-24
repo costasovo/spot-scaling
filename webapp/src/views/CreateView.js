@@ -50,14 +50,19 @@ export class CreateView extends React.Component {
 
 	handleSubmit = (event) => {
 		event.preventDefault();
-		if (!this.state.LaunchConfigurationName) {
+		this.setState({Tags: [{
+			"Key": "Name",
+			"Value": this.state.Name,
+			"PropagateAtLaunch": true
+		}]}, () => {
+			if (!this.state.LaunchConfigurationName) {
 			this.setState({LaunchConfigurationName: this.props.createState.formData.launchConfigurations[0].name}, () => {
+					this.props.actions.createGroup(this.state, this.props.loginState.accessKey, this.props.loginState.secret);
+				});
+			} else {
 				this.props.actions.createGroup(this.state, this.props.loginState.accessKey, this.props.loginState.secret);
-			});
-		} else {
-			this.props.actions.createGroup(this.state, this.props.loginState.accessKey, this.props.loginState.secret);
-		}
-
+			}
+		});
 		//getHistory().pushState(null, '/list');
 	}
 
@@ -98,7 +103,7 @@ export class CreateView extends React.Component {
 
 			var vpcZones = this.props.createState.formData.vpcs.map( (vpc) => {	
 				return (
-					<div key={vpc.id} className="checkbox">
+					<div key={vpc.id} className="radio">
 						<label>
 					  		<input type="radio" name="VPCZoneIdentifier" value={vpc.id} onChange={() => this.handleZoneChange(vpc)}/> {vpc.name || vpc.cidr} ({vpc.id})
 						</label>
@@ -115,10 +120,10 @@ export class CreateView extends React.Component {
 
 		return (
 			<div className='container'>
-				<h1>Create Autoscaling Group</h1>
+				<h1>Create New Autoscaling Group</h1>
 				{ !this.props.createState.created &&
 					<form onSubmit={this.handleSubmit}>
-						<Link to={`list`}>&lt; back to list of groups</Link>
+						<Link to={`list`} className='btn btn-default'>back to list</Link>
 						<div className="form-group">
 							<label htmlFor="Name">Name</label>
 							<input type="text" className="form-control" name="Name" id="Name" placeholder="Type some name" required
@@ -173,14 +178,14 @@ export class CreateView extends React.Component {
 							{vpcZones}
 					  	</div>
 						
-						<button type="submit" className="btn btn-success">Create</button>
+						<button type="submit" className="btn btn-primary">Create</button>
 					</form>
 				}
 				{
 					this.props.createState.created &&
 					<div>
-						<p className="lead">Group succesfully created.</p>
-						<Link className="btn btn-success" to={`list`}>back to list of groups</Link>
+						<p className="lead">New autoscaling group <strong>{this.state.Name}</strong> successfully created.</p>
+						<Link className="btn btn-primary" to={`list`}>back to list of groups</Link>
 					</div>
 				}
 			</div>

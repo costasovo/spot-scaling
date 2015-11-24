@@ -40,17 +40,17 @@ export class LoginForm extends React.Component {
 			<form onSubmit={this.handleSubmit}>
 				<div className="form-group">
 					<label htmlFor="aws-key">AWS Access Key</label>
-					<input type="text" className="form-control" name="accessKey" id="aws-key" placeholder="AWS Access Key" required
+					<input type="text" className="form-control" name="accessKey" id="aws-key" placeholder="Can be found in security credentials..." required
 					onChange={this.handleChange}
 					/>
 				</div>
 				<div className="form-group">
 					<label htmlFor="aws-secret">AWS Secret</label>
-					<input type="text" className="form-control" name="secret" id="aws-secret" placeholder="AWS Secret" required
+					<input type="password" className="form-control" name="secret" id="aws-secret" placeholder="AWS Secret" required
 					onChange={this.handleChange}
 					/>
 				</div>
-				<button type="submit" className="btn btn-success">Login</button>
+				<button type="submit" className="btn btn-primary">Login</button>
 			</form>
 		);
 	}

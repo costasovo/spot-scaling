@@ -20,6 +20,14 @@ export class Detail extends React.Component {
 			elbs = this.props.detailState.LoadBalancerNames.join(', ');
 			termPols = this.props.detailState.TerminationPolicies.join(', ');
 			vpcZones = this.props.detailState.VPCZoneIdentifier.join(', ');
+			if (this.props.detailState.logs) {
+				var i=0;
+				var logs = this.props.detailState.logs.map( (log) => {	
+					return (
+						<tr key={i++}><td>{log}</td></tr>
+					)
+				});
+			}
 		}
 
 
@@ -71,7 +79,22 @@ export class Detail extends React.Component {
 								<th>VPC Zones</th>
 								<td>{vpcZones}</td>
 							</tr>
+							{this.props.detailState.stats && 
+								<tr>
+									<th>Month savings</th>
+									<td><strong>$ {this.props.detailState.stats.savingsMoth}</strong></td>
+									<th>Saving percentage</th>
+									<td>{this.props.detailState.stats.savingsPercentage}%</td>
+								</tr>
+							}
 						</tbody>
+					</table>
+
+					<h4>Logs</h4>
+					<table className="table table-condensed">
+					<tbody>
+						{logs}
+					</tbody>
 					</table>
 				</div>
 			}
